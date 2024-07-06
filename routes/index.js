@@ -13,14 +13,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/add', function(req, res, next) {
-  // connect to db
-  db.insertOne(req.body, (err, result) => {
-    if (err) {
-      res.send('error');
-    } else {
-      res.send('success');
-    }
-  });
+  // insert to db
+  try {
+    let result = await db.insertOne(req.body);
+    return res.json(result);
+  } catch (e) {
+    return res.json(e);
+  }
 });
 
 module.exports = router;
