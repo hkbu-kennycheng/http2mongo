@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb')
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017';
 
 let client = new MongoClient(mongoUri);
-let db = client['db'];
+let db = client.db('db').collection('sensordata')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
