@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
-const mongoUri = 'mongodb://localhost:27017';
+const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017';
 
 let client = new MongoClient(mongoUri);
 let db = client['db'];
