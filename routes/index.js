@@ -4,7 +4,6 @@ const { MongoClient } = require('mongodb')
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017';
 
 let client = new MongoClient(mongoUri);
-let db = client.db('db').collection('sensordata');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,9 +11,9 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.post('/add', async function(req, res, next) {
+router.post('/:collection', async function(req, res, next) {
   // insert to db
-  let result = await db.insertOne(req.body);
+  let result = await client.db('db').collection(req.path.collection).insertOne(req.body);
   return res.json(result);
 });
 
