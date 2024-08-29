@@ -13,8 +13,14 @@ router.get('/', function(req, res, next) {
 
 router.post('/:collection', async function(req, res, next) {
   // insert to db
-  let result = await client.db('db').collection(req.path.collection).insertOne(req.body);
-  return res.json(result);
+  try {
+    let result = await client.db('db').collection(req.path.collection).insertOne(req.body);
+    return res.json(result);
+  } catch(err) {
+    console.log(err);
+    return res.sendStatus(500).json(err);
+  }
+  
 });
 
 module.exports = router;
