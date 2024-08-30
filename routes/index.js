@@ -7,11 +7,15 @@ let client = new MongoClient(mongoUri);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  req.app.locals.io.on('connection', (socket) => {
+    console.log('a user connected');
+  });
 
+  res.render('index', { title: 'Express' });
 });
 
 router.post('/:collection', async function(req, res, next) {
+  req.app.locals.io.emit(req.params.collection, req.body); // This will emit the event to all connected sockets
   // insert to db
   try {
     let result = await client.db('db').collection(req.params.collection).insertOne(req.body);
