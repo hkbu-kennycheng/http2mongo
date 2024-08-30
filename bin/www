@@ -8,6 +8,7 @@ const app = require('../app');
 const debug = require('debug')('http2mongo:server');
 const http = require('http');
 const { Server } = require("socket.io");
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * Get port from environment and store in Express.
@@ -25,6 +26,13 @@ const io = new Server(server, {
   transports: ["polling", "websocket", "webtransport"]
 });
 app.locals.io = io;
+io.on("connection", (socket) => {
+  const userId = uuidv4();
+  console.log(userId+" connected");
+  socket.on("disconnect", () => {
+    console.log(userId+" disconnected");
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
